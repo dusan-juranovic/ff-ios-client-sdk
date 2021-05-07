@@ -6,8 +6,11 @@
 //
 
 import Foundation
+#if os(iOS)
 import UIKit
-
+#elseif os(macOS)
+import AppKit
+#endif
 public protocol StorageRepositoryProtocol {
 	///Implementation of this method will `save` Codable value to cache and/or storage. Default implementation is CfCache.
 	func saveValue<Value:Codable>(_ value:Value, key:String) throws
@@ -22,7 +25,11 @@ public final class CfCache: StorageRepositoryProtocol {
 	var cache = [String:Any]()
 	public init(){
 		let notificationCenter = NotificationCenter.default
+		#if os(iOS)
 		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: UIApplication.didEnterBackgroundNotification, object: nil)
+		#elseif os(macOS)
+		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: NSApplication.didResignActiveNotification, object: nil)
+		#endif
 	}
 	
 	public func saveValue<Value:Codable>(_ value: Value, key: String) throws {
