@@ -28,7 +28,7 @@ public final class CfCache: StorageRepositoryProtocol {
 		#if os(iOS)
 		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: UIApplication.didEnterBackgroundNotification, object: nil)
 		#elseif os(macOS)
-		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: NSApplication.didResignActiveNotification, object: nil)
+		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: NSApplication.willTerminateNotification, object: nil)
 		#endif
 	}
 	
