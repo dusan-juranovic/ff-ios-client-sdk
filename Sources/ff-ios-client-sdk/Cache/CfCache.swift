@@ -6,10 +6,10 @@
 //
 
 import Foundation
-#if os(iOS)
-import UIKit
-#elseif os(macOS)
+#if os(macOS)
 import AppKit
+#else
+import UIKit
 #endif
 public protocol StorageRepositoryProtocol {
 	///Implementation of this method will `save` Codable value to cache and/or storage. Default implementation is CfCache.
@@ -25,10 +25,10 @@ public final class CfCache: StorageRepositoryProtocol {
 	var cache = [String:Any]()
 	public init(){
 		let notificationCenter = NotificationCenter.default
-		#if os(iOS)
-		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: UIApplication.didEnterBackgroundNotification, object: nil)
-		#elseif os(macOS)
+		#if os(macOS)
 		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: NSApplication.willTerminateNotification, object: nil)
+		#else
+		notificationCenter.addObserver(self, selector: #selector(cleanupCache), name: UIApplication.didEnterBackgroundNotification, object: nil)
 		#endif
 	}
 	

@@ -7,7 +7,8 @@ let package = Package(
     name: "ff-ios-client-sdk",
 	platforms: [
 		.iOS(.v10),
-		.macOS(.v10_12)
+		.macOS(.v10_12),
+		.tvOS(.v10)
 	],
     products: [
         .library(
